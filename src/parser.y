@@ -32,12 +32,13 @@ void yyerror(const char *s);
 
 /* 总的混合bnf和脚本的列表 */
 list : item { $$ = new State();  $$->AddChildrenState($1); root = $$; }
-	 | list item { $1->AddChildrenState($2); $$ = $1; }
+	 | list item { if ($2 != NULL) $1->AddChildrenState($2); $$ = $1; }
 	 ;
 
 /* 可以是bnf或脚本 */
 item : bnf_item { $$ = $1; }
 	 | SCRIPT { $$ = new State(); $$->state_type = script; $$->script = $1; }
+	 | priority { $$ = NULL; }
 	 ;
 
 /* 一行bnf的定义 */

@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-04-17 10:05:26
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-11-28 10:34:20
+* @Last Modified time: 2015-11-28 13:58:28
 */
 
 
@@ -10,6 +10,7 @@
 #define BNF_PARSER_H
 
 #include "State.h"
+#include "VMap.h"
 #include <map>
 
 using namespace std;
@@ -24,7 +25,9 @@ public:
 	void NowLeft();
 	void NowRight();
 	void AddToken(const char* token);
-
+	void MakePrecedence(VMap& vmap);
+	int getPrecedence(int id);
+	bool getAssociativity(int id);
 	// for debug
 	void printTree();
 
@@ -36,6 +39,9 @@ private:
 
 	// 结合性表，true为左结合，false为右结合
 	std::map<string, bool> associativity_map; 
+
+	std::map<int, int> id_precedence_map; 
+	std::map<int, bool> id_associativity_map; 
 
 	int now_precedence;
 	bool now_associativity;

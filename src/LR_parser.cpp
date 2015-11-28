@@ -108,7 +108,7 @@ void LR_parser::BuildParser()
     print_ItemCollection(vec);
     print_GOTO(vec);
 //    printf("test: \t %d %d %d\n",vmap.constMax+1,vec.size(),vmap.constSize);
-    table = (LRTable*)new LALRTable(vmap.constMax+1,vec.size(),vmap.constSize);
+    table = (LRTable*)new LALRTable(vmap.constMax+1,vec.size(),vmap.constSize, bnfparser);
     table->BuildTable(vec);
 //    table->printTable();
 }
@@ -131,7 +131,7 @@ void LR_parser::AddBNF(const char* filename) {
         printf("VMap: %s %d\n",lex->getRule(i), i);
         vmap.InsertVt(lex->getRule(i), i);
     }
-    BNFParser* bnfparser = new BNFParser();
+    bnfparser = new BNFParser();
     State* root = bnfparser->Analysis(filename);
     if (root == NULL) {
         printf("Error State\n");
@@ -141,7 +141,7 @@ void LR_parser::AddBNF(const char* filename) {
     bnfparser->printTree();
     bnflist = BNF::BuildAllBNF(root,vmap);
     printf("BuildAllBNF");
-    delete bnfparser;
+    bnfparser->MakePrecedence(vmap);
 }
 
 int LR_parser::Parse(Grammer_Node* root)
