@@ -99,18 +99,19 @@ void LR_parser::BuildParser()
     printf("Create LR0\n");
     // 创建LR0项集族
     vector<ItemCollection*> vec = ItemCollection::MakeLR0Items(&vmap, mainbnf, bnflist);
-//    printf("======== print LR0 Collection ========\n");
-//    print_ItemCollection(vec);
+   printf("======== print LR0 Collection ========\n");
+   // print_ItemCollection(vec);
     // 构建LALR项集族
     printf("MakeLALRItems\n");
     ItemCollection::MakeLALRItems(vec,bnflist);
     printf("======== print LR1 Collection ========\n");
-    print_ItemCollection(vec);
-    print_GOTO(vec);
+    // print_ItemCollection(vec);
+    // print_GOTO(vec);
 //    printf("test: \t %d %d %d\n",vmap.constMax+1,vec.size(),vmap.constSize);
+    printf("build table");
     table = (LRTable*)new LALRTable(vmap.constMax+1,vec.size(),vmap.constSize, bnfparser);
     table->BuildTable(vec);
-//    table->printTable();
+    // table->printTable();
 }
 
 void LR_parser::BuildParser(const char* filename) {

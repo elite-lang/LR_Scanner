@@ -1,6 +1,9 @@
 /* parser.y */
 %{
-#include <stdio.h>
+
+void yyerror(const char *s);
+
+#include <stdlib.h>
 #include "State.h"
 #include "BNFParser.h"
 
@@ -11,7 +14,9 @@ extern int yyleng;
 extern State* root;
 extern BNFParser* bnfparser;
 
-void yyerror(const char *s);
+#define YYERROR_VERBOSE 1
+
+
 
 %}
 
@@ -82,6 +87,7 @@ priority : LEFT { bnfparser->NowLeft(); }
 
 void yyerror(const char* s){
 	fprintf(stderr, "%s \n", s);    
-	fprintf(stderr, "line %d: ", yylineno);
+	fprintf(stderr, "Parser Cfg line %d: ", yylineno);
 	fprintf(stderr, "error %s \n", yytext);
+	exit(1);
 }
