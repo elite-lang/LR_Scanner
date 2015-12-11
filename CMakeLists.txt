@@ -7,7 +7,7 @@ SET (CMAKE_CXX_FLAGS_DEBUG   "-g")
 SET (CMAKE_CXX_FLAGS_MINSIZEREL  "-Os -DNDEBUG")
 SET (CMAKE_CXX_FLAGS_RELEASE  "-O4 -DNDEBUG")
 SET (CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
-include_directories(includes build src lib/lua_include lib/lex_include)
+include_directories(includes build src lib/lua_include lib/lex_include lib/cereal-1.1.2)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 # bison and flex

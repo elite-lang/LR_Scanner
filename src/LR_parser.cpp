@@ -81,11 +81,9 @@ void LR_parser::print_GOTO(vector<ItemCollection*> vec) {
         printf("\n");
     }
 
-
     printf("======= Spread =======\n");
     for (auto p = vec.begin(); p != vec.end(); ++p) {
         ItemCollection* items = *p;
-
         items->printSpread();
         printf("\n");
     }
@@ -94,8 +92,6 @@ void LR_parser::print_GOTO(vector<ItemCollection*> vec) {
 
 void LR_parser::BuildParser()
 {
-    ExtendBNF();
-    MakeID(); // for each state, make a ID for it
     printf("Create LR0\n");
     // 创建LR0项集族
     vector<ItemCollection*> vec = ItemCollection::MakeLR0Items(&vmap, mainbnf, bnflist);
@@ -143,6 +139,8 @@ void LR_parser::AddBNF(const char* filename) {
     bnflist = BNF::BuildAllBNF(root,vmap);
     printf("BuildAllBNF");
     bnfparser->MakePrecedence(vmap);
+    ExtendBNF();
+    MakeID(); // for each state, make a ID for it
 }
 
 int LR_parser::Parse(Grammer_Node* root)
