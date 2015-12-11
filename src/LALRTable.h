@@ -2,7 +2,7 @@
 * @Author: 笑凡
 * @Date:   2014-12-31 09:31:22
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-11 18:29:25
+* @Last Modified time: 2015-12-11 19:30:36
 */
 
 #ifndef LALR_TABLE_H
@@ -48,7 +48,7 @@ private:
     template<class Archive>
     void serialize(Archive &ar)
     {
-        ar( CEREAL_NVP(Goto), CEREAL_NVP(Action) ); // serialize things by passing them to the archive
+        ar( stateSum, CEREAL_NVP(Goto), CEREAL_NVP(Action) ); // serialize things by passing them to the archive
     }
 };
 
