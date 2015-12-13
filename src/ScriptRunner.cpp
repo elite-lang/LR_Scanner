@@ -12,7 +12,13 @@ static int CallFunc(lua_State * L) {
     for (auto p : env) {
         lua_rawgeti(L,LUA_REGISTRYINDEX, p.second->lua_data);
     }
-    lua_call(L, env.size(), 1);
+    int error = lua_pcall(L, env.size(), 1, 0);
+    if (error) {
+        printf("====== LUA ERROR! ======\n");
+        printf("%s\n", lua_tostring(L, -1));
+        lua_pop(L, 1);/* pop error message from the stack */
+        return 0;
+    }
     return luaL_ref(L,LUA_REGISTRYINDEX);//获得引用的索引,并pop当前栈顶
 }
 
@@ -94,7 +100,8 @@ void ScriptRunner::RunLine(const char* line) {
     int error = luaL_loadbuffer(L, buff, size ,"chunk") //加载当前script
                 | lua_pcall(L, 0, 0, 0); // 巧妙的利用或运算符，前面若成功返回0，则执行后面的
     if (error) {
-        printf("%s", lua_tostring(L, -1));
+        printf("====== LUA ERROR! ======\n");
+        printf("%s\n", lua_tostring(L, -1));
         lua_pop(L, 1);/* pop error message from the stack */
         return;
     }
@@ -120,7 +127,8 @@ int ScriptRunner::Run(int& code, char* data, Grammer_Node* node) {
 
     return 0;
 LUA_ERROR:
-    printf("%s", lua_tostring(L, -1));
+    printf("====== LUA ERROR! ======\n");
+    printf("%s\n", lua_tostring(L, -1));
     lua_pop(L, 1);/* pop error message from the stack */
     return -1;
 }

@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-01-03 18:43:13
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-10 11:50:25
+* @Last Modified time: 2015-12-13 14:11:27
 */
 
 #include "LRCore.h"
@@ -19,7 +19,8 @@ Grammer_Node* LRCore::Run(){
     while (1) {
         s = LRStack.back();
 //        printf("Stack Top: %d\n",s);
-        switch (table->ACTION(s,t->type)) {
+        char c = table->ACTION(s,t->type);
+        switch (c) {
         case 's': {
             Shift(table->GOTO(s,t->type),t);
             t = TokenFliter(lex->Read());
@@ -38,7 +39,11 @@ Grammer_Node* LRCore::Run(){
             script_runner->Finished();
             return ast;
         default:
-            printf("error\n");
+            printf("LRCore error\n");
+            printf("错误的Action动作：%c\n", c);
+            printf("目前的状态：%d\n", s);
+            printf("Token-Type: %d\n",t->type);
+            printf("Token: %s\n", t->pToken);
             //TODO: 需要释放本层资源
             return NULL;
         }
