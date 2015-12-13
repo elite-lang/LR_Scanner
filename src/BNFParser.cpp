@@ -1,4 +1,4 @@
-/* 
+/*
 * @Author: sxf
 * @Date:   2015-04-17 10:30:02
 * @Last Modified by:   sxf
@@ -7,10 +7,12 @@
 
 #include "BNFParser.h"
 #include "parser.hpp"
-#include <stdio.h>
+#include <cstdio>
 extern FILE* yyin;
 State* root = NULL;
 BNFParser* bnfparser = NULL;
+
+extern void yyparse();
 
 State* BNFParser::Analysis(const char* filename) {
 	bnfparser = this;
@@ -69,7 +71,7 @@ bool BNFParser::getAssociativity(int id) {
 void BNFParser::printNode(State* s,int d)
 {
     if (s == NULL) return;
-    
+
     for (int i = 0; i<d; ++i)
 		printf("    ");
     if (s->state_type == statement || s->state_type == terminal)
@@ -86,8 +88,8 @@ void BNFParser::printNode(State* s,int d)
 		if (s->Repeatable == 2) printf(" +");
 		if (s->Repeatable == 3) printf(" *");
     }
-   
-	
+
+
     printf("\n");
     printNode(s->children,d+1);
     printNode(s->brother,d);

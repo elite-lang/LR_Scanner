@@ -1,4 +1,5 @@
 #include <map>
+#include <string>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ struct VMap {
     int getVn(const char* s){
         return VnMap[s];
     }
-    
+
     void InsertVt(const char* s, int id) {
         VtMap[s] = id;
     }
@@ -28,7 +29,7 @@ struct VMap {
         if (VtMap.find(s) == VtMap.end()) return -1;
         return VtMap[s];
     }
-    
+
     int InsertConst(const char* s) {
         auto i = ConstMap.find(s);
         if (i != ConstMap.end()) return i->second;
@@ -40,7 +41,7 @@ struct VMap {
         if (ConstMap.find(s) == ConstMap.end()) return -1;
         return ConstMap[s];
     }
-    
+
     void print(map<string,int>& V){
         for (auto p = V.begin(); p != V.end(); ++p)
         {
@@ -58,7 +59,7 @@ struct VMap {
         printf("==== Const ====");
         print(ConstMap);
     }
-    
+
 
     // from Vn id to Vn index in the vector
     int VnIDtoIndex(int p) { if (p<=constMax) return -1;  return p-constMax-1; }
