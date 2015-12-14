@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-04-17 10:30:02
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-11-28 16:53:56
+* @Last Modified time: 2015-12-14 15:07:37
 */
 
 #include "BNFParser.h"
@@ -12,7 +12,7 @@ extern FILE* yyin;
 State* root = NULL;
 BNFParser* bnfparser = NULL;
 
-extern void yyparse();
+extern int yyparse(void);
 
 State* BNFParser::Analysis(const char* filename) {
 	bnfparser = this;
