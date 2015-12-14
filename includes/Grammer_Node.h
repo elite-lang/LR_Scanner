@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-01-02 16:28:17
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-11-10 19:51:47
+* @Last Modified time: 2015-12-14 19:04:18
 */
 
 #ifndef GRAMMER_NODE_H
@@ -13,6 +13,9 @@
 
 #define remove_ptr(P) if (P != 0) { delete P; P = 0; }
 
+/**
+ * @brief BNF语法节点
+ */
 class Grammer_Node {
 public:
     Grammer_Node* children;

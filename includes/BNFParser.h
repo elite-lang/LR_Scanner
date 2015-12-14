@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-04-17 10:05:26
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-11-28 13:58:28
+* @Last Modified time: 2015-12-14 19:03:59
 */
 
 
@@ -15,7 +15,9 @@
 
 using namespace std;
 
-
+/**
+ * @brief BNF解析器类, 负责解析BNF的定义文件
+ */
 class BNFParser {
 
 public:
