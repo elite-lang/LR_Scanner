@@ -46,7 +46,7 @@ struct VMap {
         for (auto p = V.begin(); p != V.end(); ++p)
         {
             pair<string, int> t = *p;
-            printf(t.first.c_str());
+            printf("%s", t.first.c_str());
             printf(":");
             printf("%d\n",t.second);
         }

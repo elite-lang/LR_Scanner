@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-01-03 18:43:13
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-13 14:11:27
+* @Last Modified time: 2015-12-16 18:20:58
 */
 
 #include "LRCore.h"
@@ -137,8 +137,7 @@ int LRCore::Reduce(int x,Grammer_Node*& root){
     }
     //TODO: Do the lua script and make the AST
     if (bnf->getScript() != NULL) {
-        printf("Script: ");
-        printf(bnf->getScript());
+        printf("Script: %s\n", bnf->getScript());
         script_runner->Run(bnf->getScriptCode(),bnf->getScript(),root);
     }
     return bnf->getRoot()->id;
