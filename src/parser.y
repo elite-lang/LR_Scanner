@@ -16,8 +16,6 @@ extern BNFParser* bnfparser;
 
 #define YYERROR_VERBOSE 1
 
-
-
 %}
 
 

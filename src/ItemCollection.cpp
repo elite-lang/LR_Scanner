@@ -39,6 +39,7 @@ ItemCollection& ItemCollection::operator=(const ItemCollection& other){
     Items = other.Items; // other item
     GotoMap = other.GotoMap;
     SpreadMap = other.SpreadMap;
+	return *this;
 }
 
 bool ItemCollection::operator==(const ItemCollection& other){

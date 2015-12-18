@@ -34,7 +34,8 @@ State::~State()
 
 State& State::operator=(const State& other)
 {
-
+	// TODO: 赋值重载
+	return *this;
 }
 
 bool State::operator==(const State& other)

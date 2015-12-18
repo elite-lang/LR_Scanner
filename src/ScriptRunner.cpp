@@ -62,6 +62,7 @@ Node* ScriptRunner::getRoot() {
 
 int ScriptRunner::MakeEnv(const char* name, Grammer_Node* node) {
     env.push_back(make_pair(name,node));
+	return 0;
 }
 
 int ScriptRunner::MakeNewLuaTable(Token* t) {

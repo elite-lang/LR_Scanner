@@ -44,6 +44,7 @@ Item& Item::operator=(const Item& other)
     bnf = other.bnf;
     itempoint = other.itempoint;
     lookahead = other.lookahead;
+	return *this;
 }
 
 bool Item::operator==(const Item& other) const

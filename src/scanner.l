@@ -12,6 +12,8 @@ char* maketoken(const char* data, int len);
 char* makestring(const char* data, int len);
 char* makescript(const char* data, int len);
 
+#define YY_NO_UNISTD_H
+
 %}
 
 /* show the line number */
