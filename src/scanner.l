@@ -12,7 +12,9 @@ char* maketoken(const char* data, int len);
 char* makestring(const char* data, int len);
 char* makescript(const char* data, int len);
 
+#ifdef _WIN32
 #define YY_NO_UNISTD_H
+#endif
 
 %}
 
