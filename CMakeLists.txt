@@ -3,8 +3,14 @@ cmake_minimum_required(VERSION 2.8)
 project(scanner)
 
 # bison and flex
-find_package(BISON)
-find_package(FLEX)
+if(UNIX)
+	find_package(BISON)
+	find_package(FLEX)
+elseif(WIN32)
+	find_package(BISON PATHS ./win32/bison)
+	find_package(FLEX PATHS ./win32/flex)
+endif()
+
 flex_target(SCANNER src/scanner.l ${CMAKE_CURRENT_BINARY_DIR}/scanner.cpp COMPILE_FLAGS -w)
 bison_target(PARSER src/parser.y  ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp)
 ADD_FLEX_BISON_DEPENDENCY(SCANNER PARSER)
