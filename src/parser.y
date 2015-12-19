@@ -21,7 +21,7 @@ extern BNFParser* bnfparser;
 
 %union {
 	State *s;
-	char *str = NULL;
+	char *str;
 }
 
 

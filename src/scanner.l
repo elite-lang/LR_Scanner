@@ -14,7 +14,13 @@ char* makestring(const char* data, int len);
 char* makescript(const char* data, int len);
 
 #ifdef _WIN32
+
+/*windows compatibility case*/  
 #define YY_NO_UNISTD_H
+#include <io.h>  
+#define isatty _isatty  
+#define fileno _fileno  
+
 #endif
 
 %}
