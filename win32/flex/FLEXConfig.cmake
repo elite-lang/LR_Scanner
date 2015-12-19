@@ -66,6 +66,9 @@ FIND_LIBRARY(FL_LIBRARY NAMES fl
   PATHS ./win32/flex/lib DOC "path to the fl library")
 SET(FLEX_LIBRARIES ${FL_LIBRARY})
 
+find_path(FLEX_INCLUDE_DIR FlexLexer.h
+  PATHS ./win32/flex/include DOC "Path to the flex headers")
+
 IF(FLEX_EXECUTABLE)
   SET(FLEX_FOUND TRUE)
 

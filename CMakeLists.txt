@@ -7,6 +7,7 @@ if(UNIX)
 	find_package(BISON)
 	find_package(FLEX)
 elseif(WIN32)
+	#win32 use local bison and flex
 	find_package(BISON PATHS ./win32/bison)
 	find_package(FLEX PATHS ./win32/flex)
 endif()
@@ -21,6 +22,11 @@ list(REMOVE_ITEM  source_files ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 
 
 include_directories(includes ${CMAKE_CURRENT_BINARY_DIR} src lib/cereal-1.1.2)
+
+#win32 use local flex include
+if(WIN32)
+	include_directories(./win32/flex/include)
+endif()
 
 if(USE_DYNAMIC)
 	add_library(scanner SHARED ${source_files} 

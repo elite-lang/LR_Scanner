@@ -1,6 +1,7 @@
 %{
 
-#include <stdio.h>
+#include <cstdio>
+#include <cstring>
 #include "State.h"
 #include "parser.hpp"
 

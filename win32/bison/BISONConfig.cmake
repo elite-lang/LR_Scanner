@@ -54,8 +54,8 @@
 # $Id: FindBISON.cmake 1218 2007-03-22 22:10:45Z jmh $
 
 SET(BISON_FOUND FALSE)
-
-FIND_PROGRAM(BISON_EXECUTABLE bison PATHS ./win32/bison/bin DOC "path to the bison executable")
+#use bison.cmd instead of bison.exe
+FIND_PROGRAM(BISON_EXECUTABLE bison.cmd PATHS ./win32/bison/bin DOC "path to the bison executable")
 MARK_AS_ADVANCED(BISON_EXECUTABLE)
 
 IF(BISON_EXECUTABLE)
