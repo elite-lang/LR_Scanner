@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2014-12-31 18:46:08
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-21 11:19:44
+* @Last Modified time: 2015-12-21 18:37:07
 */
 
 #include "ItemCollection.h"
@@ -69,7 +69,12 @@ vector<ItemCollection*> ItemCollection::MakeLR0Items(VMap* vmap, BNF* mainbnf,co
     return itemslist;
 }
 
-
+/**
+ * @brief 生成传播路线图
+ * 
+ * @param A 传播的发生项
+ * @param other_core_items 其他的内核项
+ */
 void ItemCollection::MakeSpreadMap(Item& A, set<Item>& other_core_items) {
     for (auto p : other_core_items) {
         Item B(p);

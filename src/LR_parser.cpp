@@ -171,3 +171,14 @@ void LR_parser::setLex(LexInterface* _lex)
 {
     lex = _lex;
 }
+
+void LR_parser::setDebugFilePath(const char* path) {
+    if (path != NULL) {
+        debug_out_path = path;
+        if (debug_out_path.length() != 0)
+            is_debug_mode = true;
+    } else {
+        is_debug_mode = false;
+        debug_out_path = "";
+    }
+}

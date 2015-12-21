@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-01-01 19:40:28
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-11 18:53:16
+* @Last Modified time: 2015-12-21 19:02:50
 */
 
 #ifndef LR_PARSER_H
@@ -52,6 +52,8 @@ public:
         vmap.constSize = size;
     }
 
+    virtual void setDebugFilePath(const char* path);
+
 private:
     LexInterface* lex;
     vector<BNF*> bnflist;
@@ -71,6 +73,10 @@ private:
     // 配置文件路径
     std::string cfg_filepath;
     
+    // 中间过程打印路径
+    std::string debug_out_path;
+    bool is_debug_mode;
+
     // 扩展 BNF，增加根元素
     void ExtendBNF();
     // 给每一个state加上id
