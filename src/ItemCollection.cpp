@@ -97,8 +97,7 @@ void ItemCollection::MakeSpreadMap(Item& A, set<Item>& other_core_items) {
                     for (int oldlookahead : oldB.getLookahead())
                         B.addLookahead(oldlookahead);
                     // ======================
-
-                    core.erase(B); core.insert(B); // 更新B的Lookahead符号
+					core.erase(B); core.insert(B); // 更新B的Lookahead符号
                     break;
                 }
             }
@@ -108,7 +107,7 @@ void ItemCollection::MakeSpreadMap(Item& A, set<Item>& other_core_items) {
 
 // 本函数的作用时对当前this对象复制一份求向前看操作符的传播方向表
 // 同时会确定出自发生成的向前看操作符   item是当前要测试的项，会对其增加不存在的向前看看符号#
-void ItemCollection::MakeLookahead(const Item& item,const vector<BNF*>& bnfs){
+void ItemCollection::MakeLookahead(const Item& item,const vector<BNF*>& bnfs) {
     Item A(item); set<int> tempset; // 当前遍历到Core中的A符号
     tempset.insert(TESTV);
     A.setLookahead(tempset); // 向这个项中插入测试符号TESTV
@@ -116,12 +115,13 @@ void ItemCollection::MakeLookahead(const Item& item,const vector<BNF*>& bnfs){
     items.CoreItems.erase(A); items.CoreItems.insert(A); // 更新CoreItems表中的值
     items.CLOSURE1(bnfs); // 对复制版求闭包
 
-    MakeSpreadMap(A,items.getCoreItems());
-    MakeSpreadMap(A,items.getItems());
-//    //========== for debug ==========
+	MakeSpreadMap(A, items.getCoreItems());
+	MakeSpreadMap(A, items.getCoreItems());
+	MakeSpreadMap(A, items.getItems());
 
-//    printf("TEST_I%d:",items.getID());
-//    items.printSet();
+	//========== for debug ==========
+    printf("TEST_I%d:",items.getID());
+	items.printSet();
 }
 
 // 将每一个新的lookahead符号传播到CoreItems里的pItem上去
@@ -150,8 +150,8 @@ void ItemCollection::MakeLALRItems(vector<ItemCollection*>& LR0Items,const vecto
 
     // 确定自发生成的符号和传播关系
     for (ItemCollection* items : LR0Items) {
-        set<Item>& Core = items->getCoreItems();
-        for (auto q : Core) {
+        set<Item> Core = items->getCoreItems();
+        for (const Item& q : Core) {
             items->MakeLookahead(q,bnfs);
         }
     }
