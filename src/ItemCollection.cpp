@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2014-12-31 18:46:08
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-10 12:01:55
+* @Last Modified time: 2015-12-21 11:19:44
 */
 
 #include "ItemCollection.h"
@@ -120,8 +120,8 @@ void ItemCollection::MakeLookahead(const Item& item,const vector<BNF*>& bnfs) {
 	MakeSpreadMap(A, items.getItems());
 
 	//========== for debug ==========
-    printf("TEST_I%d:",items.getID());
-	items.printSet();
+ //    printf("TEST_I%d:",items.getID());
+	// items.printSet();
 }
 
 // 将每一个新的lookahead符号传播到CoreItems里的pItem上去
