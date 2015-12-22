@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-01-02 16:29:28
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-21 18:56:08
+* @Last Modified time: 2015-12-22 10:26:23
 */
 
 #ifndef PARSER_H
@@ -67,13 +67,6 @@ public:
      */
     virtual void setScriptRunner(ScriptRunner* sr) = 0;
 
-
-    /**
-     * @brief 设置解释器生成中间变量的目录，设置后自动打印中间过程
-     * 
-     * @param path 设置路径，设置为NULL或不设置则不打印过程
-     */
-    virtual void setDebugFilePath(const char* path) = 0;
 
     /**
      * @brief 构建特点的LALR解析器

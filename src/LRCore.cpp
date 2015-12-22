@@ -2,14 +2,16 @@
 * @Author: sxf
 * @Date:   2015-01-03 18:43:13
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-16 18:20:58
+* @Last Modified time: 2015-12-22 15:33:47
 */
 
 #include "LRCore.h"
+#include "DebugMsg.h"
 
 
 Grammer_Node* LRCore::Run(){
-    printf("LRCore Run\n");
+    auto& fout = DebugMsg::parser_dbg();
+    fout << "===== LRCore Run =====" << endl;
 
     script_runner->Init();
     Token* t = TokenFliter(lex->Read());
@@ -54,7 +56,8 @@ Grammer_Node* LRCore::Run(){
 
 Token* LRCore::TokenFliter(Token* token) {
     int size;
-    printf("next Token: %d %s\n",token->type,token->pToken);
+    auto& fout = DebugMsg::parser_dbg();
+    fout << "next Token: " << token->type << " " << token->pToken << endl;
     int id = vmap->getConst(token->pToken);
     if (id != -1) token->type = id;
     if (token->pToken != NULL && *(token->pToken) == '#') // 这里过滤Token，将#开头的当做元脚本进行执行
@@ -64,14 +67,15 @@ Token* LRCore::TokenFliter(Token* token) {
     
 void LRCore::Shift(int x,Token* t){
     // for debug
-    printf("------------------------\n");
-    printf("Stack: ");
+    auto& fout = DebugMsg::parser_dbg();
+    fout << "------------------------" << endl;
+    fout << "Stack: ";
     for (auto p: LRStack)
     {
-        printf("%d ",p);
+        fout << p << ' ';
     }
 
-    printf("Shift: %d\n",x);
+    fout << "Shift: " << x << endl;
     LRStack.push_back(x);
     NodeStack.push(ast->NewNode());
     NodeStack.top()->lua_data = script_runner->MakeNewLuaTable(t);
@@ -87,14 +91,14 @@ int LRCore::Reduce(int x,Grammer_Node*& root){
     BNF* bnf = bnflist->at(x);
 
     // for debug
-    printf("------------------------\n");
-    printf("Stack: ");
+    auto& fout = DebugMsg::parser_dbg();
+    fout << "------------------------" << endl;
+    fout << "Stack: ";
     for (auto p: LRStack)
     {
-        printf("%d ",p);
+        fout << p << ' ';
     }
-    printf("Reduce: %d\n",x+1);
-
+    fout << "Reduce: " << x+1 << endl;
     bnf->print_bnf();
 
     // 从栈顶弹出对应BNF式元素数个
@@ -137,7 +141,7 @@ int LRCore::Reduce(int x,Grammer_Node*& root){
     }
     //TODO: Do the lua script and make the AST
     if (bnf->getScript() != NULL) {
-        printf("Script: %s\n", bnf->getScript());
+        fout << "Script: " << bnf->getScript() << endl;
         script_runner->Run(bnf->getScriptCode(),bnf->getScript(),root);
     }
     return bnf->getRoot()->id;

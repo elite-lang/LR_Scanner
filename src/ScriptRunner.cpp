@@ -111,17 +111,14 @@ void ScriptRunner::RunLine(const char* line) {
 int ScriptRunner::Run(int& code, char* data, Grammer_Node* node) {
     int error;
     runner = this; rootnode = node;
-    printf("LUA STACK: %d\n",lua_gettop(L));
     if (code == 0) {
         char* buff = addFunction(data);
-        printf("load script: %s",buff);
         error = luaL_loadbuffer(L, buff, strlen(buff) ,"chunk") //加载当前script
                 | lua_pcall(L, 0, 0, 0); // 巧妙的利用或运算符，前面若成功返回0，则执行后面的
         delete[] buff;
         if (error) goto LUA_ERROR;
         code = cachecode; // 将C函数处理得到的缓存代码返回
     } else {
-        printf("run script: ");
         lua_rawgeti(L,LUA_REGISTRYINDEX, code);
         node->lua_data = CallFunc(L);
     }

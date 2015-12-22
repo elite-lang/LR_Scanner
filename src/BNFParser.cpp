@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-04-17 10:30:02
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-14 15:07:37
+* @Last Modified time: 2015-12-22 13:02:07
 */
 
 #include "BNFParser.h"
@@ -52,7 +52,7 @@ void BNFParser::MakePrecedence(VMap& vmap) {
 		if (id == -1) id = vmap.getVt(p.first.c_str());
 		id_precedence_map.insert(make_pair(id, p.second));
 		id_associativity_map.insert(make_pair(id, associativity_map[p.first]));
-		printf("%d - %d\n", id, p.second);
+		// printf("%d - %d\n", id, p.second);
 	}
 }
 

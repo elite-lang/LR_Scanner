@@ -2,31 +2,30 @@
 * @Author: sxf
 * @Date:   2014-12-31 18:41:35
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-11-10 19:46:38
+* @Last Modified time: 2015-12-22 14:32:08
 */
 
 #include "BNF.h"
+#include "DebugMsg.h"
 
 void BNF::print_bnf(int point) const {
-    printf(this->root->state_class);
-//    printf("%d",this->root->id);
-    printf(" => ");
-
+    auto& fout = DebugMsg::parser_dbg();
+    fout << this->root->id << " : " << this->root->state_class;
+    fout << " => ";
     int k = 0;
     for (auto p = BNFdata.begin(); p!= BNFdata.end();++p)
     {
-        if (point == k) printf(". ");
+        if (point == k) fout << ". ";
         ++k;
         State* s = *p;
         if (s->state_type == constant)
-            printf(s->state_const);
+            fout << s->state_const;
         else
-            printf(s->state_class);
-//        printf("%d",s->id);
-        printf(" ");
+            fout << s->state_class;
+        fout << " ";
     }
-    if (point == k) printf(". ");
-    printf("\n");
+    if (point == k) fout << ". ";
+    fout << endl;
 }
 
 void BNF::print_bnf() const {

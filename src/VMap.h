@@ -1,5 +1,6 @@
 #include <map>
 #include <string>
+#include "DebugMsg.h"
 
 using namespace std;
 
@@ -43,20 +44,20 @@ struct VMap {
     }
 
     void print(map<string,int>& V){
+        auto& fout = DebugMsg::parser_dbg();
         for (auto p = V.begin(); p != V.end(); ++p)
         {
             pair<string, int> t = *p;
-            printf("%s", t.first.c_str());
-            printf(":");
-            printf("%d\n",t.second);
+            fout <<  t.first << ":" << t.second << endl;
         }
     }
     void printAll() {
-        printf("==== Vn ====");
+        auto& fout = DebugMsg::parser_dbg();
+        fout << "===== Vn =====" << endl;
         print(VnMap);
-        printf("==== Vt ====");
+        fout << "===== Vt =====" << endl;
         print(VtMap);
-        printf("==== Const ====");
+        fout << "===== Const =====" << endl;
         print(ConstMap);
     }
 

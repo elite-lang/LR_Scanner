@@ -2,13 +2,13 @@
 * @Author: sxf
 * @Date:   2015-01-03 13:21:45
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-11 18:27:37
+* @Last Modified time: 2015-12-22 14:13:44
 */
 
 #include "LALRTable.h"
 #include <fstream>
 #include <cereal/archives/portable_binary.hpp>
-
+#include "DebugMsg.h"
 
 
 LALRTable::LALRTable(int _constSum, int _stateSum, int _VSum, BNFParser* bnfparser) {
@@ -107,21 +107,22 @@ int LALRTable::GOTO(int state, int id){
 }
 
 void LALRTable::printTable() {
-    printf("=========== LALR TABLE ==========\n");
+    auto& fout = DebugMsg::parser_dbg();
+    fout << "=========== LALR TABLE ==========" << endl;
     for (int s = 0; s < VSum; ++s) {
-        printf("\t%d",s);
+        fout << "\t" << s;
     }
-    printf("\n");
+    fout << endl;
     for (int s = 0; s < stateSum; ++s) {
-        printf("I%d:",s);
+        fout << "I" << s << ":";
         for (int i = 0; i < VSum; ++i) {
-            printf("\t");
-            if (ACTION(s,i)=='a') { printf("acc"); continue;  }
+            fout << "\t";
+            if (ACTION(s,i)=='a') {fout << "acc"; continue;  }
             if (ACTION(s,i))
-                printf("%c",ACTION(s,i));
-            printf("%d",GOTO(s,i));
+                fout << ACTION(s,i);
+            fout << GOTO(s,i);
         }
-        printf("\n");
+        fout << endl;
     }
 }
 

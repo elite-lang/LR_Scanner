@@ -4,6 +4,7 @@
 #include "ScriptRunner.h"
 #include "Grammer_Node.h"
 #include "FileUtils.h"
+#include "DebugMsg.h"
 
 LR_parser::LR_parser()
 {
@@ -30,10 +31,6 @@ void LR_parser::ExtendBNF()
 
 void LR_parser::MakeID()
 {
-    // print debug message
-    printf("========= print V* =========\n");
-    vmap.printAll();
-    printf("============================\n");
     for (auto p = bnflist.begin(); p != bnflist.end(); ++p) {
         BNF* bnf = *p;
         State* s = bnf->getRoot();
@@ -108,24 +105,19 @@ void LR_parser::BuildParser()
     printf("======== print LR0 Collection ========\n");
     // print_ItemCollection(vec);
     // 构建LALR项集族
-    printf("MakeLALRItems\n");
     ItemCollection::MakeLALRItems(vec,bnflist);
     printf("======== print LR1 Collection ========\n");
     // print_ItemCollection(vec);
     // print_GOTO(vec);
     // printf("test: \t %d %d %d\n",vmap.constMax+1,vec.size(),vmap.constSize);
-    printf("build table");
     LALRTable* lalr_table = new LALRTable(vmap.constMax+1, vec.size(), vmap.constSize, bnfparser);
     lalr_table->BuildTable(vec);
     lalr_table->Save(save_filepath.c_str());
     table = (LRTable*) lalr_table;
-    // table->printTable();
 }
 
 void LR_parser::BuildParser(const char* filename) {
-    printf("add bnf\n");
     AddBNF(filename);
-    printf("build parser\n");
     BuildParser();
 }
 
@@ -135,10 +127,7 @@ void LR_parser::AddBNF(const char* filename) {
     // ask the ID name from the lex
     int size = lex->getRuleSize();
     vmap.constSize = size-1;
-    printf("Size: %d\n", size);
-
     for (int i = 1; i< size; ++i) {
-        printf("VMap: %s %d\n",lex->getRule(i), i);
         vmap.InsertVt(lex->getRule(i), i);
     }
     bnfparser = new BNFParser();
@@ -148,9 +137,8 @@ void LR_parser::AddBNF(const char* filename) {
         delete bnfparser;
         return;
     }
-    bnfparser->printTree();
+    // bnfparser->printTree();
     bnflist = BNF::BuildAllBNF(root,vmap);
-    printf("BuildAllBNF");
     bnfparser->MakePrecedence(vmap);
     ExtendBNF();
     MakeID(); // for each state, make a ID for it
@@ -158,27 +146,26 @@ void LR_parser::AddBNF(const char* filename) {
 
 int LR_parser::Parse(Grammer_Node* root)
 {
+    auto& fout = DebugMsg::parser_dbg();
+    // print debug message
+    if (DebugMsg::isDebug()) {
+        vmap.printAll();
+        fout << "=========== BNF ===========" << endl;
+        for (auto bnf : bnflist)
+            bnf->print_bnf();
+        table->printTable();
+    }
     core.setLex(lex);
     core.setBnflist(&bnflist);
     core.setTable(table);
     core.setVMap(&vmap);
     core.setAst(root);
     core.Run();
+    DebugMsg::parser_close();
     return 0;
 }
 
 void LR_parser::setLex(LexInterface* _lex)
 {
     lex = _lex;
-}
-
-void LR_parser::setDebugFilePath(const char* path) {
-    if (path != NULL) {
-        debug_out_path = path;
-        if (debug_out_path.length() != 0)
-            is_debug_mode = true;
-    } else {
-        is_debug_mode = false;
-        debug_out_path = "";
-    }
 }
