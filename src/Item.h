@@ -5,17 +5,16 @@
 * @Last Modified time: 2015-11-10 19:42:51
 */
 
-#include<vector>
-#include <set>
-
-using namespace std;
 
 #ifndef ITEM_H
 #define ITEM_H
 
 #include "BNF.h"
 #include "State.h"
+#include<vector>
+#include <set>
 
+using namespace std;
 
 class Item
 {
@@ -32,7 +31,7 @@ public:
     Item(BNF* _bnf,int _itempoint);
     void setItem(BNF* _bnf,int _itempoint);
     void addLookahead(int p) { lookahead.insert(p); }
-    void setLookahead(set<int> pset) { lookahead = pset; }
+	void setLookahead(const set<int>& pset) { lookahead = pset; }
     void removeLookahead(int p) { lookahead.erase(p); }
     const set<int>& getLookahead() const { return lookahead; }
     int getNowID() const { // 静态的Item项要保障不能被成员函数修改，故为静态

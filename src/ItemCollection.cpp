@@ -120,7 +120,7 @@ void ItemCollection::MakeLookahead(const Item& item,const vector<BNF*>& bnfs) {
     items.CoreItems.erase(A); items.CoreItems.insert(A); // 更新CoreItems表中的值
     items.CLOSURE1(bnfs); // 对复制版求闭包
 
-	MakeSpreadMap(A, items.getCoreItems());
+	//MakeSpreadMap(A, items.getCoreItems());
 	MakeSpreadMap(A, items.getCoreItems());
 	MakeSpreadMap(A, items.getItems());
 
@@ -168,7 +168,7 @@ void ItemCollection::MakeLALRItems(vector<ItemCollection*>& LR0Items,const vecto
             for (const Item& item : items->getCoreItems()) { // 这是要遍历的内核项
                 auto m = items->SpreadMap.find(item); //找出该内核项对应的传播表
                 if (m != items->SpreadMap.end()) {
-                    vector<pair<ItemCollection*,Item>>& imap = m->second;
+                    const vector<pair<ItemCollection*,Item>>& imap = m->second;
                     for (auto i = imap.begin(); i != imap.end(); ++i) { // 遍历该传播表
                         ItemCollection* pItems = i->first;
                         const Item& pItem = i->second;
