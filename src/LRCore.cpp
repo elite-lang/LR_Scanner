@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2015-01-03 18:43:13
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-22 15:33:47
+* @Last Modified time: 2015-12-24 21:29:51
 */
 
 #include "LRCore.h"
@@ -41,11 +41,19 @@ Grammer_Node* LRCore::Run(){
             script_runner->Finished();
             return ast;
         default:
+            string pointer = t->debug_line;
+            for (auto p = pointer.begin(); p != pointer.end(); ++p) {
+                if ((p-pointer.begin()) == t->col_num) { *p = '^'; continue; }
+                if (*p != ' ' && *p != '\t') { *p = '~'; continue; }
+            }
+            printf("%s\n", t->debug_line);
+            printf("%s\n", pointer.c_str());
             printf("LRCore error\n");
             printf("错误的Action动作：%c\n", c);
             printf("目前的状态：%d\n", s);
             printf("Token-Type: %d\n",t->type);
             printf("Token: %s\n", t->pToken);
+            printf("line: %d, %d\n",t->row_num, t->col_num);
             //TODO: 需要释放本层资源
             return NULL;
         }
