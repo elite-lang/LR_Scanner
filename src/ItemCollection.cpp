@@ -2,7 +2,7 @@
 * @Author: sxf
 * @Date:   2014-12-31 18:46:08
 * @Last Modified by:   sxf
-* @Last Modified time: 2015-12-21 18:37:07
+* @Last Modified time: 2015-12-23 10:52:37
 */
 
 #include "ItemCollection.h"
@@ -120,7 +120,7 @@ void ItemCollection::MakeLookahead(const Item& item,const vector<BNF*>& bnfs) {
     items.CoreItems.erase(A); items.CoreItems.insert(A); // 更新CoreItems表中的值
     items.CLOSURE1(bnfs); // 对复制版求闭包
 
-	//MakeSpreadMap(A, items.getCoreItems());
+	//MakeSpreadMap(A, items.getCoreItems()); // 不知这里为何会有两行一样的, 不知道是之前故意写成这样,还是拷贝错了, 注意一下
 	MakeSpreadMap(A, items.getCoreItems());
 	MakeSpreadMap(A, items.getItems());
 
