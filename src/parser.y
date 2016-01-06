@@ -33,6 +33,7 @@ extern BNFParser* bnfparser;
 
 %%
 
+
 /* 总的混合bnf和脚本的列表 */
 list : item { $$ = new State();  $$->AddChildrenState($1); root = $$; }
 	 | list item { if ($2 != NULL) $1->AddChildrenState($2); $$ = $1; }
@@ -67,9 +68,9 @@ symbol : '<' name '>' { $$ = $2; $$->state_type = statement; }
 	   ;
 
 /* 名字，并且可以定义实例名 */
-name : ID  { $$ = new State(); 
+name : ID  { $$ = new State();
 			 $$->state_class = $1; }
-	 | ID ':' ID  { $$ = new State(); 
+	 | ID ':' ID  { $$ = new State();
 	 				$$->state_class = $1;
 	 				$$->state_var = $3; }
 	 ;
@@ -84,7 +85,7 @@ priority : LEFT { bnfparser->NowLeft(); }
 %%
 
 void yyerror(const char* s){
-	fprintf(stderr, "%s \n", s);    
+	fprintf(stderr, "%s \n", s);
 	fprintf(stderr, "Parser Cfg line %d: ", yylineno);
 	fprintf(stderr, "error %s \n", yytext);
 	exit(1);

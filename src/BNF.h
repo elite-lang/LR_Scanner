@@ -1,4 +1,4 @@
-/* 
+/*
 * @Author: sxf
 * @Date:   2014-12-31 08:38:50
 * @Last Modified by:   sxf
@@ -12,6 +12,7 @@
 #include <vector>
 #include <map>
 #include "VMap.h"
+#include <cereal/types/vector.hpp>
 
 using namespace std;
 
@@ -23,14 +24,14 @@ public:
 
     // 通过EBNF得出的root节点，遍历所有可能的BNF范式
     static vector<BNF*> BuildAllBNF(State*,VMap&);
-    
+
     void print_bnf() const;
     void print_bnf(int) const;
 
     void addBNFdata(State* _s) { BNFdata.push_back(_s); }
-    
+
     // ======= setter and getter ========
-    
+
     void setRoot(State* _s) { root = _s; }
     State* getRoot() const { return root; }
     const vector<State*>& getBNFdata() const { return BNFdata; }
@@ -39,10 +40,13 @@ public:
     char* getScript() { return bnf_script; }
     int& getScriptCode() { return scriptcode; }
 
+
+
+
 protected:
     static void BuildFromNode(State*,VMap&);
-    
-    
+
+
 private:
     int id;
     // 一条BNF范式
@@ -50,9 +54,22 @@ private:
     vector<State*> BNFdata;
     char* bnf_script;
     int scriptcode;
-    
+
     static int temp_size;
     static vector<BNF*> bnfs;
+
+
+
+    // 串行化
+
+    friend class cereal::access;
+
+    template<class Archive>
+    void serialize(Archive &ar)
+    {
+        // serialize things by passing them to the archive
+        ar( id, root, CEREAL_NVP(BNFdata), bnf_script);
+    }
 };
 
 

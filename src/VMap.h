@@ -1,6 +1,7 @@
 #include <map>
 #include <string>
 #include "DebugMsg.h"
+#include <cereal/types/map.hpp>
 
 using namespace std;
 
@@ -64,6 +65,18 @@ struct VMap {
 
     // from Vn id to Vn index in the vector
     int VnIDtoIndex(int p) { if (p<=constMax) return -1;  return p-constMax-1; }
+
+    // 串行化
+
+    friend class cereal::access;
+
+    template<class Archive>
+    void serialize(Archive &ar)
+    {
+        // serialize things by passing them to the archive
+        ar( constSize, constMax, CEREAL_NVP(VnMap), CEREAL_NVP(VtMap), CEREAL_NVP(ConstMap) );
+    }
+
 
 };
 
