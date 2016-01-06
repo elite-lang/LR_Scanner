@@ -2,6 +2,7 @@
 #include <string>
 #include "DebugMsg.h"
 #include <cereal/types/map.hpp>
+#include <cereal/types/string.hpp>
 
 using namespace std;
 
@@ -68,15 +69,12 @@ struct VMap {
 
     // 串行化
 
-    friend class cereal::access;
-
     template<class Archive>
     void serialize(Archive &ar)
     {
         // serialize things by passing them to the archive
         ar( constSize, constMax, CEREAL_NVP(VnMap), CEREAL_NVP(VtMap), CEREAL_NVP(ConstMap) );
     }
-
 
 };
 

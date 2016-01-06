@@ -68,7 +68,11 @@ private:
     void serialize(Archive &ar)
     {
         // serialize things by passing them to the archive
-        ar( id, root, CEREAL_NVP(BNFdata), bnf_script);
+        string script = bnf_script;
+        ar( id, script, *root );
+        for (auto p : BNFdata) {
+            ar(*p);
+        }
     }
 };
 

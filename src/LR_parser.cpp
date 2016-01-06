@@ -5,10 +5,11 @@
 #include "Grammer_Node.h"
 #include "FileUtils.h"
 #include "DebugMsg.h"
+#include <cereal/archives/json.hpp>
 
 LR_parser::LR_parser()
 {
-	
+
 }
 
 LR_parser::~LR_parser()
@@ -162,10 +163,23 @@ int LR_parser::Parse(Grammer_Node* root)
     core.setAst(root);
     core.Run();
     DebugMsg::parser_close();
+	save_log();
     return 0;
 }
 
 void LR_parser::setLex(LexInterface* _lex)
 {
     lex = _lex;
+}
+
+void LR_parser::save_log() {
+	if (DebugMsg::isDebug()) {
+	    cereal::JSONOutputArchive oarchive(DebugMsg::parser_save());
+	    oarchive(
+			cereal::make_nvp("table", *((LALRTable*)table)),
+			cereal::make_nvp("vmap", vmap),
+			cereal::make_nvp("bnf", *this)
+	 	);
+		DebugMsg::parser_save_close();
+	}
 }

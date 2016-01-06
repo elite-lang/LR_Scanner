@@ -1,4 +1,4 @@
-/* 
+/*
 * @Author: sxf
 * @Date:   2015-01-01 19:40:28
 * @Last Modified by:   sxf
@@ -27,15 +27,15 @@ public:
   // constructors
     LR_parser();
     ~LR_parser();
-  
+
     // 构建解析器
     virtual void BuildParser();
-    
+
     // 先AddBNF，再构建解析器
     virtual void BuildParser(const char*);
 
     // 将EBNF的描述文件传入，用来构建LR语法解析器
-    virtual void AddBNF(const char*);  
+    virtual void AddBNF(const char*);
 
     // 解析文本
     virtual int Parse(Grammer_Node* root);
@@ -55,11 +55,11 @@ public:
 private:
     LexInterface* lex;
     vector<BNF*> bnflist;
-    
+
     BNF* mainbnf; // 增广文法中的根元素
-    
+
     VMap vmap;
-    
+
     // 分析器内核
     LRCore core;
     // LR分析表
@@ -70,13 +70,28 @@ private:
 
     // 配置文件路径
     std::string cfg_filepath;
-    
+
     // 扩展 BNF，增加根元素
     void ExtendBNF();
     // 给每一个state加上id
     void MakeID();
 
     void print_GOTO(vector<ItemCollection*> vec);
+
+
+    // 串行化
+    void save_log();
+
+    friend class cereal::access;
+
+    template<class Archive>
+    void serialize(Archive &ar)
+    {
+        // serialize things by passing them to the archive
+        for (BNF* p : bnflist) {
+            ar(*p);
+        }
+    }
 };
 
 #endif // LR_PARSER_H
