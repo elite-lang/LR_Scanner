@@ -21,7 +21,7 @@ file(GLOB_RECURSE source_files ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 list(REMOVE_ITEM  source_files ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 
 
-include_directories(includes ${CMAKE_CURRENT_BINARY_DIR} src lib/cereal-1.1.2)
+include_directories(includes ${CMAKE_CURRENT_BINARY_DIR} src ../header_libs/cereal-1.1.2)
 
 #win32 use local flex include
 if(WIN32)
@@ -29,10 +29,10 @@ if(WIN32)
 endif()
 
 if(USE_DYNAMIC)
-	add_library(scanner SHARED ${source_files} 
+	add_library(scanner SHARED ${source_files}
 		${BISON_PARSER_OUTPUTS} ${FLEX_SCANNER_OUTPUTS}) # 使用动态库
 else()
-	add_library(scanner STATIC ${source_files} 
+	add_library(scanner STATIC ${source_files}
 		${BISON_PARSER_OUTPUTS} ${FLEX_SCANNER_OUTPUTS}) # 使用静态库
 endif()
 
