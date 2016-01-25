@@ -52,8 +52,8 @@ private:
     // 一条BNF范式
     State* root;
     vector<State*> BNFdata;
-    char* bnf_script;
-    int scriptcode;
+    char* bnf_script = NULL;
+    int scriptcode = -1;
 
     static int temp_size;
     static vector<BNF*> bnfs;
@@ -68,7 +68,10 @@ private:
     void serialize(Archive &ar)
     {
         // serialize things by passing them to the archive
-        string script = bnf_script;
+        // 特殊处理可有可无的script
+        string script;
+        if (bnf_script != NULL) script = bnf_script;
+        else script = "";
         ar( id, script, *root );
         for (auto p : BNFdata) {
             ar(*p);

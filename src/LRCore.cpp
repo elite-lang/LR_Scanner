@@ -1,4 +1,4 @@
-/* 
+/*
 * @Author: sxf
 * @Date:   2015-01-03 18:43:13
 * @Last Modified by:   sxf
@@ -55,7 +55,7 @@ Grammer_Node* LRCore::Run(){
             printf("Token: %s\n", t->pToken);
             printf("line: %d, %d\n",t->row_num, t->col_num);
             //TODO: 需要释放本层资源
-            return NULL;
+            return (Grammer_Node*)-1;
         }
     }
 
@@ -69,10 +69,10 @@ Token* LRCore::TokenFliter(Token* token) {
     int id = vmap->getConst(token->pToken);
     if (id != -1) token->type = id;
     if (token->pToken != NULL && *(token->pToken) == '#') // 这里过滤Token，将#开头的当做元脚本进行执行
-        script_runner->RunLine(token->pToken); 
+        script_runner->RunLine(token->pToken);
     return token;
 }
-    
+
 void LRCore::Shift(int x,Token* t){
     // for debug
     auto& fout = DebugMsg::parser_dbg();
@@ -147,7 +147,7 @@ int LRCore::Reduce(int x,Grammer_Node*& root){
         }
 
     }
-    //TODO: Do the lua script and make the AST
+    // Do the lua script and make the AST
     if (bnf->getScript() != NULL) {
         fout << "Script: " << bnf->getScript() << endl;
         script_runner->Run(bnf->getScriptCode(),bnf->getScript(),root);

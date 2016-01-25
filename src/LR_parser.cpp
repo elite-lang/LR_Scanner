@@ -161,10 +161,12 @@ int LR_parser::Parse(Grammer_Node* root)
     core.setTable(table);
     core.setVMap(&vmap);
     core.setAst(root);
-    core.Run();
+    Grammer_Node* node = core.Run();
     DebugMsg::parser_close();
 	save_log();
-    return 0;
+    if (node != (void*)-1)
+        return 0;
+    return -1;
 }
 
 void LR_parser::setLex(LexInterface* _lex)
