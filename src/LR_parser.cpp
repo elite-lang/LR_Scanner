@@ -176,12 +176,14 @@ void LR_parser::setLex(LexInterface* _lex)
 
 void LR_parser::save_log() {
 	if (DebugMsg::isDebug()) {
-	    cereal::JSONOutputArchive oarchive(DebugMsg::parser_save());
-	    oarchive(
-			cereal::make_nvp("table", *((LALRTable*)table)),
-			cereal::make_nvp("vmap", vmap),
-			cereal::make_nvp("bnf", *this)
-	 	);
-		DebugMsg::parser_save_close();
+        {
+    	    cereal::JSONOutputArchive oarchive(DebugMsg::parser_save());
+    	    oarchive(
+    			cereal::make_nvp("table", *((LALRTable*)table)),
+    			cereal::make_nvp("vmap", vmap),
+    			cereal::make_nvp("bnf", *this)
+    	 	);
+        } // 通过让oarchive提前析构，为文件输出流添加结尾
+		DebugMsg::parser_save_close(); // 一定要确保JSONOutput输出完后再close
 	}
 }
