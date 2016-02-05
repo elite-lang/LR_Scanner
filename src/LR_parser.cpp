@@ -54,7 +54,20 @@ void LR_parser::MakeID()
 void print_ItemCollection(vector<ItemCollection*> vec) {
     for (auto p = vec.begin(); p != vec.end(); ++p) {
         ItemCollection* items = *p;
-        printf("I%d:",items->getID());
+        printf("I%d:", ->getID());
+        items->printSet();
+    }
+}
+
+void print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostream& os) {
+    os << "digraph g {"
+          "graph [fontsize=30 labelloc=\"t\" label=\"\" splines=true overlap=false rankdir = \"LR\"];"
+          "ratio = auto;";
+    
+
+    for (auto p = vec.begin(); p != vec.end(); ++p) {
+        ItemCollection* items = *p;
+        printf("I%d:", ->getID());
         items->printSet();
     }
 }
@@ -162,8 +175,8 @@ int LR_parser::Parse(Grammer_Node* root)
     core.setVMap(&vmap);
     core.setAst(root);
     Grammer_Node* node = core.Run();
-    DebugMsg::parser_close();
 	save_log();
+    DebugMsg::parser_close();
     if (node != (void*)-1)
         return 0;
     return -1;
