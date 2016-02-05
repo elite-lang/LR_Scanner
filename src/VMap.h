@@ -66,7 +66,7 @@ struct VMap {
     string find(int id) {
         for (auto p : VnMap) if (p.second == id) return p.first;
         for (auto p : VtMap) if (p.second == id) return p.first;
-        for (auto p : ConstMap) if (p.second == id) return p.first;
+        for (auto p : ConstMap) if (p.second == id) return "'" + p.first + "'";
         return "";
     }
 

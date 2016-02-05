@@ -63,7 +63,8 @@ void print_ItemCollection(vector<ItemCollection*> vec) {
 static const char begin_state[] = "style = \"filled, bold\" penwidth = 5 fillcolor = \"white\" fontname = \"Courier New\" shape = \"Mrecord\" ";
 static const char end_state[] = "style = \"filled\" penwidth = 1 fillcolor = \"black\" fontname = \"Courier New\" shape = \"Mrecord\" ";
 static const char normal_state[] = "style = \"filled\" penwidth = 1 fillcolor = \"white\" fontname = \"Courier New\" shape = \"Mrecord\" ";
-void print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostream& os) {
+
+void LR_parser::print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostream& os) {
     os << "digraph g {" << endl
        << "graph [fontsize=30 labelloc=\"t\" label=\"\" splines=true overlap=false rankdir = \"LR\"];" << endl
        << "ratio = auto;" << endl;
@@ -78,7 +79,22 @@ void print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostream& os) {
     }
 
     // 依次打印goto跳转
-
+    for (auto p = vec.begin(); p != vec.end(); ++p) {
+        ItemCollection* items = *p;
+        for (int i = 0; i< vmap.constSize; ++i) {
+            ItemCollection* gotoitems = items->GOTO(i);
+            int gotoid = -1;
+            if (gotoitems != NULL) {
+                gotoid = gotoitems->getID();
+            }
+            if (gotoid != -1) {
+                os << "state" << items->getID() << " -> " << "state" << gotoid
+                   << "[ penwidth = 1 fontsize = 28 fontcolor = \"black\" label = \""
+                   << vmap.find(i)
+                   << "\" ];";
+            }
+        }
+    }
 }
 
 void LR_parser::print_GOTO(vector<ItemCollection*> vec) {
@@ -133,6 +149,11 @@ void LR_parser::BuildParser()
     // print_ItemCollection(vec);
     // print_GOTO(vec);
     // printf("test: \t %d %d %d\n",vmap.constMax+1,vec.size(),vmap.constSize);
+
+    // 打印graphviz图
+    print_graphviz_ItemCollection(vec, DebugMsg::lex_graphviz());
+    DebugMsg::lex_graphviz_close();
+
     LALRTable* lalr_table = new LALRTable(vmap.constMax+1, vec.size(), vmap.constSize, bnfparser);
     lalr_table->BuildTable(vec);
     lalr_table->Save(save_filepath.c_str());

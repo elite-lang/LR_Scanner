@@ -78,6 +78,7 @@ private:
 
     void print_GOTO(vector<ItemCollection*> vec);
 
+    void print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostream& os);
 
     // 串行化
     void save_log();
