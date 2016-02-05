@@ -1,4 +1,4 @@
-/* 
+/*
 * @Author: sxf
 * @Date:   2014-12-31 18:41:35
 * @Last Modified by:   sxf
@@ -31,6 +31,27 @@ void BNF::print_bnf(int point) const {
 void BNF::print_bnf() const {
     print_bnf(-1);
 }
+
+string BNF::get_graphviz_bnf(int point) const {
+    string ans;
+    ans += this->root->state_class;
+    ans += " => ";
+    int k = 0;
+    for (auto p = BNFdata.begin(); p!= BNFdata.end();++p)
+    {
+        if (point == k) ans += "&bull; ";
+        ++k;
+        State* s = *p;
+        if (s->state_type == constant)
+            ans += s->state_const;
+        else
+            ans += s->state_class;
+        ans += " ";
+    }
+    if (point == k) ans += "&bull; ";
+    return ans;
+}
+
 
 int BNF::temp_size;
 vector<BNF*> BNF::bnfs;
@@ -108,5 +129,5 @@ void BNF::BuildFromNode(State* node, VMap& vmap)
 	}
 	p = p->brother;
     }
-    
+
 }

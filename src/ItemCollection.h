@@ -1,4 +1,4 @@
-/* 
+/*
 * @Author: sxf
 * @Date:   2014-12-31 09:05:37
 * @Last Modified by:   sxf
@@ -7,6 +7,7 @@
 
 #include <set>
 #include <vector>
+#include <ostream>
 #include "Item.h"
 #include "BNF.h"
 
@@ -24,16 +25,17 @@ public:
     ItemCollection(const ItemCollection& other);
     ItemCollection& operator=(const ItemCollection& other);
     bool operator==(const ItemCollection& other);
-    
+
     static vector<ItemCollection*> MakeLR0Items(VMap*,BNF*,const vector<BNF*>&);
     static void MakeLALRItems(vector<ItemCollection*>&,const vector<BNF*>&);
     static vector<Item> findItems(int,const vector<BNF*>&);
 
-    
+
     // 计算GOTO函数
     ItemCollection* GOTO(int p) const { return GotoMap[p]; }
 
     void printSet();
+    void print_graphviz_Set(ostream& os);
     void printSpread();
     // ===== setter and getter =====
     void setVmap(VMap* _v) { vmap = _v; GotoMap.resize(_v->constSize+1,0); }
@@ -84,6 +86,9 @@ private:
     ItemCollection* MakeGOTO(int x,vector<ItemCollection*>&);
     // 计算Goto函数时，对每一个内核项构建对应的ItemCollection
     static void MakeItemCollection(int x,set<Item>& itemset, ItemCollection& items);
+
+
+    static void print_graphviz_SetFrom(ostream& os, set<Item>& items);
 };
 
 

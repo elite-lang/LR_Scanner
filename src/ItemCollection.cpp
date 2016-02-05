@@ -1,4 +1,4 @@
-/* 
+/*
 * @Author: sxf
 * @Date:   2014-12-31 18:46:08
 * @Last Modified by:   sxf
@@ -71,7 +71,7 @@ vector<ItemCollection*> ItemCollection::MakeLR0Items(VMap* vmap, BNF* mainbnf,co
 
 /**
  * @brief 生成传播路线图
- * 
+ *
  * @param A 传播的发生项
  * @param other_core_items 其他的内核项
  */
@@ -422,4 +422,41 @@ void ItemCollection::printSpread() {
             toitem.getBNF()->print_bnf(toitem.getItempoint());
         }
     }
+}
+
+static void print_graphviz_trline(ostream& os, int id, const string& data, const string& ahead = "") {
+    os << "<tr><td align=\"left\" port=\"r" << id << "\">"
+       << "&#40;" << id << "&#41; " << data
+       << " </td>" << ahead << "</tr>";
+}
+
+void ItemCollection::print_graphviz_SetFrom(ostream& os, set<Item>& items) {
+    VMap* vmap = ItemCollection::vmap;
+    for (const Item& item : items) {
+        string s;
+        s += item.getBNF()->get_graphviz_bnf(item.getItempoint());
+
+        if (!item.getLookahead().empty()) {
+            string a;
+
+            a += "<td bgcolor=\"grey\" align=\"right\">";
+            for (int ahead : item.getLookahead()) {
+                a += vmap->find(ahead);
+            }
+            a += "</td>";
+            print_graphviz_trline(os, item.getBNF()->getID(), s, a);
+        } else
+            print_graphviz_trline(os, item.getBNF()->getID(), s);
+    }
+}
+
+void ItemCollection::print_graphviz_Set(ostream& os) {
+    os  << "label = < <table border=\"0\" cellborder=\"0\" cellpadding=\"3\" bgcolor=\"white\">" << endl
+        << "<tr><td bgcolor=\"black\" align=\"center\" colspan=\"2\"><font color=\"white\">"
+        << "State #" << getID() << "</font></td></tr>" << endl;
+
+    print_graphviz_SetFrom(os, CoreItems);
+    print_graphviz_SetFrom(os, Items);
+
+    os << "</table> >" << endl;
 }

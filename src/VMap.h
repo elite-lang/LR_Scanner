@@ -63,6 +63,13 @@ struct VMap {
         print(ConstMap);
     }
 
+    string find(int id) {
+        for (auto p : VnMap) if (p.second == id) return p.first;
+        for (auto p : VtMap) if (p.second == id) return p.first;
+        for (auto p : ConstMap) if (p.second == id) return p.first;
+        return "";
+    }
+
 
     // from Vn id to Vn index in the vector
     int VnIDtoIndex(int p) { if (p<=constMax) return -1;  return p-constMax-1; }

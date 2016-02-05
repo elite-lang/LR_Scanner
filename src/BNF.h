@@ -11,6 +11,7 @@
 #include "State.h"
 #include <vector>
 #include <map>
+#include <string>
 #include "VMap.h"
 #include <cereal/types/vector.hpp>
 
@@ -27,6 +28,7 @@ public:
 
     void print_bnf() const;
     void print_bnf(int) const;
+    string get_graphviz_bnf(int) const;
 
     void addBNFdata(State* _s) { BNFdata.push_back(_s); }
 

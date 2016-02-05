@@ -59,17 +59,26 @@ void print_ItemCollection(vector<ItemCollection*> vec) {
     }
 }
 
+
+static const char begin_state[] = "style = \"filled, bold\" penwidth = 5 fillcolor = \"white\" fontname = \"Courier New\" shape = \"Mrecord\" ";
+static const char end_state[] = "style = \"filled\" penwidth = 1 fillcolor = \"black\" fontname = \"Courier New\" shape = \"Mrecord\" ";
+static const char normal_state[] = "style = \"filled\" penwidth = 1 fillcolor = \"white\" fontname = \"Courier New\" shape = \"Mrecord\" ";
 void print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostream& os) {
-    os << "digraph g {"
-          "graph [fontsize=30 labelloc=\"t\" label=\"\" splines=true overlap=false rankdir = \"LR\"];"
-          "ratio = auto;";
+    os << "digraph g {" << endl
+       << "graph [fontsize=30 labelloc=\"t\" label=\"\" splines=true overlap=false rankdir = \"LR\"];" << endl
+       << "ratio = auto;" << endl;
 
-
+    // 依次打印全部状态集
     for (auto p = vec.begin(); p != vec.end(); ++p) {
         ItemCollection* items = *p;
-        printf("I%d:", items->getID());
-        items->printSet();
+        os << '\"' << "state" << items->getID() << '\"';
+        os << '[' << endl;
+        items->print_graphviz_Set(os);
+        os << ']' << endl;
     }
+
+    // 依次打印goto跳转
+
 }
 
 void LR_parser::print_GOTO(vector<ItemCollection*> vec) {
