@@ -54,7 +54,7 @@ void LR_parser::MakeID()
 void print_ItemCollection(vector<ItemCollection*> vec) {
     for (auto p = vec.begin(); p != vec.end(); ++p) {
         ItemCollection* items = *p;
-        printf("I%d:", ->getID());
+        printf("I%d:", items->getID());
         items->printSet();
     }
 }
@@ -63,11 +63,11 @@ void print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostream& os) {
     os << "digraph g {"
           "graph [fontsize=30 labelloc=\"t\" label=\"\" splines=true overlap=false rankdir = \"LR\"];"
           "ratio = auto;";
-    
+
 
     for (auto p = vec.begin(); p != vec.end(); ++p) {
         ItemCollection* items = *p;
-        printf("I%d:", ->getID());
+        printf("I%d:", items->getID());
         items->printSet();
     }
 }
