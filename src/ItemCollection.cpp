@@ -436,12 +436,16 @@ void ItemCollection::print_graphviz_SetFrom(ostream& os, set<Item>& items) {
         string s;
         s += item.getBNF()->get_graphviz_bnf(item.getItempoint());
 
-        if (!item.getLookahead().empty()) {
+        if (item.getSize() == item.getItempoint()) {
             string a;
 
             a += "<td bgcolor=\"grey\" align=\"right\">";
             for (int ahead : item.getLookahead()) {
-                a += vmap->find(ahead);
+                printf("%d\n", ahead);
+                if (ahead == 0)
+                    a += "$";
+                else
+                    a += vmap->find(ahead);
             }
             a += "</td>";
             print_graphviz_trline(os, item.getBNF()->getID(), s, a);

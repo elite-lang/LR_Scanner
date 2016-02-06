@@ -35,7 +35,7 @@ void BNF::print_bnf() const {
 string BNF::get_graphviz_bnf(int point) const {
     string ans;
     ans += this->root->state_class;
-    ans += " => ";
+    ans += " =&gt; ";
     int k = 0;
     for (auto p = BNFdata.begin(); p!= BNFdata.end();++p)
     {

@@ -22,9 +22,9 @@ void LR_parser::ExtendBNF()
 {
     mainbnf = new BNF();
     State* s = new State();
-    s->state_class = "<Main>";
+    s->state_class = "S'";
     s->state_type = statement;
-    s->id = vmap.InsertVn("<Main>");
+    s->id = vmap.InsertVn("S'");
     mainbnf->setRoot(s);
     mainbnf->setID(-1);
     mainbnf->addBNFdata(bnflist[0]->getRoot());
@@ -65,17 +65,22 @@ static const char end_state[] = "style = \"filled\" penwidth = 1 fillcolor = \"b
 static const char normal_state[] = "style = \"filled\" penwidth = 1 fillcolor = \"white\" fontname = \"Courier New\" shape = \"Mrecord\" ";
 
 void LR_parser::print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostream& os) {
+    printf("print graphviz\n");
     os << "digraph g {" << endl
        << "graph [fontsize=30 labelloc=\"t\" label=\"\" splines=true overlap=false rankdir = \"LR\"];" << endl
        << "ratio = auto;" << endl;
-
+    os.flush();
     // 依次打印全部状态集
     for (auto p = vec.begin(); p != vec.end(); ++p) {
         ItemCollection* items = *p;
         os << '\"' << "state" << items->getID() << '\"';
-        os << '[' << endl;
+        os << " [" << endl;
+        if (items->getID() == 0)
+            os << begin_state << endl;
+        else
+            os << normal_state << endl;
         items->print_graphviz_Set(os);
-        os << ']' << endl;
+        os << "];" << endl;
     }
 
     // 依次打印goto跳转
@@ -91,10 +96,11 @@ void LR_parser::print_graphviz_ItemCollection(vector<ItemCollection*> vec, ostre
                 os << "state" << items->getID() << " -> " << "state" << gotoid
                    << "[ penwidth = 1 fontsize = 28 fontcolor = \"black\" label = \""
                    << vmap.find(i)
-                   << "\" ];";
+                   << "\" ];" << endl;
             }
         }
     }
+    os << "}" << endl;
 }
 
 void LR_parser::print_GOTO(vector<ItemCollection*> vec) {
@@ -123,7 +129,6 @@ void LR_parser::print_GOTO(vector<ItemCollection*> vec) {
         items->printSpread();
         printf("\n");
     }
-
 }
 
 void LR_parser::BuildParser()
@@ -151,8 +156,9 @@ void LR_parser::BuildParser()
     // printf("test: \t %d %d %d\n",vmap.constMax+1,vec.size(),vmap.constSize);
 
     // 打印graphviz图
-    print_graphviz_ItemCollection(vec, DebugMsg::lex_graphviz());
-    DebugMsg::lex_graphviz_close();
+
+    print_graphviz_ItemCollection(vec, DebugMsg::parser_graphviz());
+    DebugMsg::parser_graphviz_close();
 
     LALRTable* lalr_table = new LALRTable(vmap.constMax+1, vec.size(), vmap.constSize, bnfparser);
     lalr_table->BuildTable(vec);
