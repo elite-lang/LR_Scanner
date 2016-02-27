@@ -17,6 +17,7 @@ Grammer_Node* LRCore::Run(){
     Token* t = TokenFliter(lex->Read());
 
     LRStack.push_back(0); // 放入0号根
+    dbg_line_vec.push_back(new DbgLine(t->type, ' ', LRStack));
     int s;
     while (1) {
         s = LRStack.back();
@@ -26,6 +27,7 @@ Grammer_Node* LRCore::Run(){
         case 's': {
             Shift(table->GOTO(s,t->type),t);
             t = TokenFliter(lex->Read());
+            dbg_line_vec.push_back(new DbgLine(t->type, 's', LRStack));
             break;
         }
         case 'r': {
@@ -34,10 +36,12 @@ Grammer_Node* LRCore::Run(){
             s = LRStack.back();
 //            printf("Stack Top: %d, Vn:%d\n",s,Vn);
             Shift(table->GOTO(s,Vn),root);
+            dbg_line_vec.push_back(new DbgLine(t->type, 'r', LRStack));
             break;
         }
         case 'a':
             printf("Accept!\n");
+            dbg_line_vec.push_back(new DbgLine(t->type, 'a', LRStack));
             script_runner->Finished();
             return ast;
         default:

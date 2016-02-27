@@ -230,7 +230,8 @@ void LR_parser::save_log() {
     	    oarchive(
     			cereal::make_nvp("table", *((LALRTable*)table)),
     			cereal::make_nvp("vmap", vmap),
-    			cereal::make_nvp("bnf", *this)
+    			cereal::make_nvp("bnf", *this),
+                cereal::make_nvp("core", core)
     	 	);
         } // 通过让oarchive提前析构，为文件输出流添加结尾
 		DebugMsg::parser_save_close(); // 一定要确保JSONOutput输出完后再close

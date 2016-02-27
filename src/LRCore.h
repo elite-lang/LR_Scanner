@@ -1,4 +1,4 @@
-/* 
+/*
 * @Author: sxf
 * @Date:   2015-01-03 18:42:35
 * @Last Modified by:   sxf
@@ -13,29 +13,30 @@
 #include "ScriptRunner.h"
 #include "LRTable.h"
 #include <stack>
+#include "DbgLine.h"
 using namespace std;
 
-class LRCore 
+class LRCore
 {
 public:
     LRCore() {}
     ~LRCore() {}
     Grammer_Node* Run();
-    
+
     //======= setter and getter =========
-    
+
     void setLex(LexInterface* _l) { lex = _l; }
-    LexInterface* getLex() { return lex; } 
-    
+    LexInterface* getLex() { return lex; }
+
     void setTable(LRTable* _t) { table = _t; }
     LRTable* getTable() { return table; }
-    
+
     void setVMap(VMap* _v) { vmap = _v; }
     void setBnflist(vector<BNF*>* _bnfs) { bnflist = _bnfs; }
     void setAst(Grammer_Node* _ast) { ast = _ast; }
     void setScriptRunner(ScriptRunner* _s) { script_runner = _s; }
 private:
-    
+
     void Shift(int,Token* t); // 移入
     void Shift(int,Grammer_Node*); // 移入,处理节点用
 
@@ -62,6 +63,21 @@ private:
     LRTable* table;
     // 脚本执行器
     ScriptRunner* script_runner;
+
+    // Debug Line
+    vector<DbgLine*> dbg_line_vec;
+
+    // 串行化
+    friend class cereal::access;
+
+    template<class Archive>
+    void serialize(Archive &ar)
+    {
+        // serialize things by passing them to the archive
+        for (auto item : dbg_line_vec) {
+            ar(*item);
+        }
+    }
 };
 
 #endif // LR_CORE_H
