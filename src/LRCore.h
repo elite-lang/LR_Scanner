@@ -20,7 +20,11 @@ class LRCore
 {
 public:
     LRCore() {}
-    ~LRCore() {}
+    virtual ~LRCore() {
+        for (auto item : dbg_line_vec) {
+            delete item;
+        }
+    }
     Grammer_Node* Run();
 
     //======= setter and getter =========
