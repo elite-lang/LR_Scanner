@@ -56,6 +56,7 @@ private:
     // 分析栈
     deque<int> LRStack;
     // 节点栈
+    deque<int> NodeIntStack;
     stack<Grammer_Node*> NodeStack;
     // 词法分析程序
     LexInterface* lex;

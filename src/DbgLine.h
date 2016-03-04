@@ -7,14 +7,18 @@
 class DbgLine {
 private:
     /* data */
+    int state;
     int next;
     char action;
     std::vector<int> stack;
+    std::vector<int> nodestack;
 public:
-    DbgLine(int next, char action, std::deque<int>& stack) {
+    DbgLine(int state, int next, char action, std::deque<int>& stack, std::deque<int>& nodestack) {
+        this->state = state;
         this->next = next;
         this->action = action;
         this->stack.insert(this->stack.begin(), stack.begin(), stack.end());
+        this->nodestack.insert(this->nodestack.begin(), nodestack.begin(), nodestack.end());
     }
 private:
     // 串行化
@@ -24,9 +28,11 @@ private:
     void serialize(Archive &ar)
     {
         // serialize things by passing them to the archive
-        ar( cereal::make_nvp("next", next),
-            cereal::make_nvp("action", action),
-            CEREAL_NVP(stack));
+        ar( CEREAL_NVP(state),
+            CEREAL_NVP(next),
+            CEREAL_NVP(action),
+            CEREAL_NVP(stack),
+            CEREAL_NVP(nodestack));
     }
 };
 

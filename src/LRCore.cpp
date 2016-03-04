@@ -17,7 +17,7 @@ Grammer_Node* LRCore::Run(){
     Token* t = TokenFliter(lex->Read());
 
     LRStack.push_back(0); // 放入0号根
-    dbg_line_vec.push_back(new DbgLine(t->type, ' ', LRStack));
+    NodeIntStack.push_back(0);
     int s;
     while (1) {
         s = LRStack.back();
@@ -26,22 +26,24 @@ Grammer_Node* LRCore::Run(){
         switch (c) {
         case 's': {
             Shift(table->GOTO(s,t->type),t);
+            dbg_line_vec.push_back(new DbgLine(s, t->type, 's', LRStack, NodeIntStack));
             t = TokenFliter(lex->Read());
-            dbg_line_vec.push_back(new DbgLine(t->type, 's', LRStack));
             break;
         }
         case 'r': {
             Grammer_Node* root = ast->NewNode();
             int Vn = Reduce(table->GOTO(s,t->type),root);
+            dbg_line_vec.push_back(new DbgLine(s, t->type, 'r', LRStack, NodeIntStack));
             s = LRStack.back();
 //            printf("Stack Top: %d, Vn:%d\n",s,Vn);
             Shift(table->GOTO(s,Vn),root);
-            dbg_line_vec.push_back(new DbgLine(t->type, 'r', LRStack));
+            NodeIntStack.push_back(Vn);
+            dbg_line_vec.push_back(new DbgLine(s, Vn, 's', LRStack, NodeIntStack));
             break;
         }
         case 'a':
             printf("Accept!\n");
-            dbg_line_vec.push_back(new DbgLine(t->type, 'a', LRStack));
+            dbg_line_vec.push_back(new DbgLine(s, t->type, 'a', LRStack, NodeIntStack));
             script_runner->Finished();
             return ast;
         default:
@@ -89,6 +91,7 @@ void LRCore::Shift(int x,Token* t){
 
     fout << "Shift: " << x << endl;
     LRStack.push_back(x);
+    NodeIntStack.push_back(t->type);
     NodeStack.push(ast->NewNode());
     NodeStack.top()->lua_data = script_runner->MakeNewLuaTable(t);
 }
@@ -123,6 +126,7 @@ int LRCore::Reduce(int x,Grammer_Node*& root){
 
         for (int i = 0; i < state_sum; ++i) {
             LRStack.pop_back();
+            NodeIntStack.pop_back();
             tempstack.push_back(NodeStack.top()); // 这样push后是反向的数组
             NodeStack.pop();
         }
