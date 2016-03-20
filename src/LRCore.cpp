@@ -71,7 +71,8 @@ Grammer_Node* LRCore::Run(){
 Token* LRCore::TokenFliter(Token* token) {
     int size;
     auto& fout = DebugMsg::parser_dbg();
-    fout << "next Token: " << token->type << " " << token->pToken << endl;
+    if (token->type != NULL && token->pToken != NULL)
+        fout << "next Token: " << token->type << " " << token->pToken << endl;
     int id = vmap->getConst(token->pToken);
     if (id != -1) token->type = id;
     if (token->pToken != NULL && *(token->pToken) == '#') // 这里过滤Token，将#开头的当做元脚本进行执行
