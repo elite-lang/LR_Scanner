@@ -31,9 +31,12 @@ endif()
 if(USE_DYNAMIC)
 	add_library(scanner SHARED ${source_files}
 		${BISON_PARSER_OUTPUTS} ${FLEX_SCANNER_OUTPUTS}) # 使用动态库
+	install(TARGETS scanner RUNTIME DESTINATION bin)
+
 else()
 	add_library(scanner STATIC ${source_files}
 		${BISON_PARSER_OUTPUTS} ${FLEX_SCANNER_OUTPUTS}) # 使用静态库
+	install(TARGETS scanner ARCHIVE DESTINATION lib)
 endif()
 
 if(NOT BUILD_ALL)
